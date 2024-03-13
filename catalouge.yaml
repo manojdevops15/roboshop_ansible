@@ -1,0 +1,22 @@
+- name: Install catalouge instance
+  hosts: localhosts
+  become: yes
+  tasks:
+  - name: disable and enable nodejs
+    ansible.builtin.shell: dnf module disable nodejs -y; dnf module enable nodejs:18 -y;
+
+  - name: install nodejs
+    ansible.builtin.dnf:
+      name: nodejs
+      state: present
+
+  - name: roboshop useradd
+    ansible.builtin.user:
+      name: roboshop
+
+  - name: create directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
+
+
