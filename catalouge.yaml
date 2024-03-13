@@ -1,5 +1,5 @@
 - name: Install catalouge instance
-  hosts: localhosts
+  hosts: catalogue
   become: yes
   tasks:
   - name: disable and enable nodejs
