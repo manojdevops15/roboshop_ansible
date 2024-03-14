@@ -7,6 +7,11 @@
       name: nginx
       state: present
 
+   - name: start nginx
+    ansible.builtin.service:
+      name: nginx
+      state: started
+
   - name: Remove old html file (delete file)
     ansible.builtin.file:
       path: /usr/share/nginx/html
@@ -36,5 +41,5 @@
   - name: start and enable nginx
     ansible.builtin.service:
       name: nginx
-      state: started
+      state: restarted
       enabled: yes
