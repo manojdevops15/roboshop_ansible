@@ -4,10 +4,10 @@
   tasks:
   - name: install nginx
     ansible.builtin.dnf:
-      name: nginx
+      name: nginx 
       state: present
-
-  - name: Remove old html file (delete file)
+  
+  - name: remove html directory
     ansible.builtin.file:
       path: /usr/share/nginx/html
       state: absent
@@ -17,30 +17,24 @@
       path: /usr/share/nginx/html
       state: directory
 
-  - name: Download new html file
+  - name: Download web app
     ansible.builtin.get_url:
       url: https://roboshop-builds.s3.amazonaws.com/web.zip
       dest: /tmp
 
-  - name: Unarchive a file that is already on the remote machine
+  - name: Extract application
     ansible.builtin.unarchive:
       src: /tmp/web.zip
       dest: /usr/share/nginx/html
-      remote_src: yes 
+      remote_src: yes
 
-  - name: copy roboshop conf
+  - name: copy roboshop configuration
     ansible.builtin.copy:
-      src: mongod.repo
+      src: roboshop.conf
       dest: /etc/nginx/default.d/roboshop.conf
-
-  # - name: Check Nginx service status
-  #   ansible.builtin.systemd:
-  #     name: nginx
-  #     state: status
-
 
   - name: start and enable nginx
     ansible.builtin.service:
       name: nginx
       state: restarted
-      # enabled: yes
+      enabled: yes
