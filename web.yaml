@@ -33,14 +33,14 @@
       src: mongod.repo
       dest: /etc/nginx/default.d/roboshop.conf
 
-  - name: Check Nginx service status
-    ansible.builtin.systemd:
-      name: nginx
-      state: status
+  # - name: Check Nginx service status
+  #   ansible.builtin.systemd:
+  #     name: nginx
+  #     state: status
 
 
   - name: start and enable nginx
     ansible.builtin.service:
       name: nginx
       state: restarted
-      enabled: yes
+      # enabled: yes
