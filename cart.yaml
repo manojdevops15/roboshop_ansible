@@ -1,56 +1,57 @@
-- name: install cart
+
+- name: cart
   hosts: cart
   become: yes
   tasks:
-  - name: update nodejs version
-    ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y ;
+  - name: disable old nodejs and enable nodejs
+    ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
 
-  - name: install nodejs
+  - name: Install nodejs
     ansible.builtin.dnf:
-      name: nodejs
+      name: nodejs 
       state: present
 
-  - name: user add
+  - name: create roboshop user
     ansible.builtin.user:
       name: roboshop
 
-  - name: Recursively remove directory
+  - name: Recursively remove app directory
     ansible.builtin.file:
       path: /app
       state: absent
 
-  - name: create directory
+  - name: create app directory
     ansible.builtin.file:
       path: /app
       state: directory
 
-  - name: download user file
+  - name: download cart application
     ansible.builtin.get_url:
-      url: https://roboshop-builds.s3.amazonaws.com/user.zip
+      url: https://roboshop-builds.s3.amazonaws.com/cart.zip
       dest: /tmp
 
-  - name: unzip the file
+  - name: extract cart application
     ansible.builtin.unarchive:
       src: /tmp/cart.zip
       dest: /app
       remote_src: yes
 
-  - name: npm install
+  - name: Install dependencies
     ansible.builtin.command: npm install
     args:
       chdir: /app
 
-  - name: copy user repo
+  - name: Copy cart service
     ansible.builtin.copy:
       src: cart.service
       dest: /etc/systemd/system/cart.service
 
-  - name: daemon reload
+  - name: deamon realod and start
     ansible.builtin.systemd_service:
       daemon_reload: true
 
-  - name: start and enable user
+  - name: start and enable cart
     ansible.builtin.service:
-      name: user
+      name: cart
       state: restarted
       enabled: yes
