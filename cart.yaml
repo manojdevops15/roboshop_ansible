@@ -24,8 +24,10 @@
       path: /app
       state: directory
 
-  - name: download the application code
-    ansible.builtin.command: https://roboshop-builds.s3.amazonaws.com/cart.zip
+  - name: download user file
+    ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/user.zip
+      dest: /tmp
 
   - name: unzip the file
     ansible.builtin.unarchive:
