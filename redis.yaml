@@ -24,6 +24,6 @@
 
   - name: start and enable redis
     ansible.builtin.service:
-      name: httpd
+      name: redis
       state: restarted
       enabled: yes
